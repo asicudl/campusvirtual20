@@ -102,7 +102,7 @@
                redirectPort="8443"
                URIEncoding="UTF-8"
                connectionTimeout="120000"
-               maxThreads="50"
+               maxThreads="100"
                    acceptCount="25"
                    minSpareThreads="25"
                    maxConnections="10000"
