@@ -55,6 +55,112 @@
                 <configuration name="final.splash" value="true" />
         </tool>
 
+<tool
+                        id="sakai.kaltura.mymedia"
+                        title="Kaltura My Media"
+                        description="Continguts de vídeo de l'usuari (Kaltura)">
+
+                <configuration name="sakai:portlet-pre-render" value="true" />
+
+		<category name="projectedocent" />
+
+                <configuration name="functions.require" />
+
+                <configuration name="imsti.launch" value="url-kaltura-mymedia" />
+                <configuration name="imsti.xml" />
+                <configuration name="imsti.secret" value="secret" />
+                <configuration name="imsti.key" value="key" />
+
+		<configuration name="imsti.pagetitle" value="MyMedia LTI (Kaltura)" />
+                <configuration name="imsti.tooltitle" value="MyMedia LTI (Kaltura)" />
+                <configuration name="imsti.newpage" value="off"/>
+                <configuration name="imsti.maximize" value="false" />
+                <configuration name="imsti.frameheight" />
+                <configuration name="imsti.debug" value="off" />
+                <configuration name="imsti.releasename" value="on"/>
+                <configuration name="imsti.releaseemail" value="on"/>
+                <configuration name="imsti.custom" />
+                <configuration name="imsti.allowsettings" value="on" />
+                <configuration name="imsti.allowroster" value="off"/>
+                <configuration name="imsti.allowroutcomes" value="off"/>
+                <configuration name="imsti.contentlink"  />
+		<configuration name="imsti.splash" value="" />
+
+		<configuration name="final.launch" value="true"/>
+                <configuration name="final.xml" value="true"/>
+                <configuration name="final.secret" value="true"/>
+                <configuration name="final.key" value="true"/>
+
+                <configuration name="final.pagetitle" value="true"/>
+                <configuration name="final.tooltitle" value="true"/>
+                <configuration name="final.newpage" value="true"/>
+                <configuration name="final.maximize" value="true"/>
+                <configuration name="final.frameheight" value="true"/>
+                <configuration name="final.debug" value="true"/>
+                <configuration name="final.releasename" value="true"/>
+                <configuration name="final.releaseemail" value="true"/>
+                <configuration name="final.custom" value="true"/>
+                <configuration name="final.allowsettings" value="true"/>
+                <configuration name="final.allowroster" value="true"/>
+                <configuration name="final.allowoutcomes" value="true"/>
+                <configuration name="final.contentlink" value="true"/>
+                <configuration name="final.splash" value="true" />
+
+</tool>
+
+<tool
+                        id="sakai.kaltura.mediagallery"
+                        title="Kaltura Media Gallery"
+                        description="Galeria de vídeos d'un espai (Kaltura)">
+
+                <configuration name="sakai:portlet-pre-render" value="true" />
+
+		<category name="projectedocent" />
+
+		<configuration name="functions.require" />
+
+                <configuration name="imsti.launch" value="url-kaltura-mediagallery" />
+                <configuration name="imsti.xml" />
+                <configuration name="imsti.secret" value="secret" />
+                <configuration name="imsti.key" value="key" />
+
+                <configuration name="imsti.pagetitle" value="Media Gallery LTI (Kaltura)" />
+                <configuration name="imsti.tooltitle" value="Media Gallery LTI (Media Gallery)" />
+                <configuration name="imsti.newpage" value="off"/>
+                <configuration name="imsti.maximize" value="false" />
+                <configuration name="imsti.frameheight" />
+                <configuration name="imsti.debug" value="off" />
+                <configuration name="imsti.releasename" value="on"/>
+                <configuration name="imsti.releaseemail" value="on"/>
+                <configuration name="imsti.custom" />
+                <configuration name="imsti.allowsettings" value="on" />
+                <configuration name="imsti.allowroster" value="off"/>
+                <configuration name="imsti.allowroutcomes" value="off"/>
+                <configuration name="imsti.contentlink"  />
+		<configuration name="imsti.splash" value="" />
+
+		<configuration name="final.launch" value="true"/>
+                <configuration name="final.xml" value="true"/>
+                <configuration name="final.secret" value="true"/>
+                <configuration name="final.key" value="true"/>
+
+                <configuration name="final.pagetitle" value="true"/>
+                <configuration name="final.tooltitle" value="true"/>
+                <configuration name="final.newpage" value="true"/>
+                <configuration name="final.maximize" value="true"/>
+                <configuration name="final.frameheight" value="true"/>
+                <configuration name="final.debug" value="true"/>
+                <configuration name="final.releasename" value="true"/>
+                <configuration name="final.releaseemail" value="true"/>
+                <configuration name="final.custom" value="true"/>
+                <configuration name="final.allowsettings" value="true"/>
+                <configuration name="final.allowroster" value="true"/>
+                <configuration name="final.allowoutcomes" value="true"/>
+                <configuration name="final.contentlink" value="true"/>
+                <configuration name="final.splash" value="true" />
+
+</tool>
+
 
 <tool
                         id="sakai.guiadocent.ice"
