@@ -682,6 +682,21 @@
 											<value>${kaltura.launch.secret}</value>
 										</replacement>
 										<replacement>
+
+           <token>TOKEN-KALTURA-MYMEDIA-LAUNCH-URL</token>
+
+           <value>${kaltura.mymedia.launch.url}</value>
+
+   </replacement>
+
+   <replacement>
+
+           <token>TOKEN-KALTURA-MEDIAGALLERY-LAUNCH-URL</token>
+
+           <value>${kaltura.mediagallery.launch.url}</value>
+
+   </replacement>
+										<replacement>
 											<token>TOKEN-KALTURA-HOST</token>
 											<value>${kaltura.host}</value>
 										</replacement>
