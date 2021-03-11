@@ -260,6 +260,41 @@
 		
    </bean>
    
+   	<bean id="espaisPATSincro" class="cat.udl.asic.jobs.espaisPATSincro" scope="singleton" init-method="init">
+		
+		<property name="siteService"
+        ref="org.sakaiproject.site.api.SiteService" />
+        <property name="securityService"
+        ref="org.sakaiproject.authz.api.SecurityService" />
+        <property name="authzGroupService"
+        ref="org.sakaiproject.authz.api.AuthzGroupService" />
+        <property name="courseManagementService"
+        ref="org.sakaiproject.coursemanagement.api.CourseManagementService" />
+         <property name="groupProvider"
+        ref="org.sakaiproject.authz.api.GroupProvider" />
+           <property name="sqlService"
+        ref="org.sakaiproject.db.api.SqlService" />
+        	<property name="userDirectoryService"
+        ref="org.sakaiproject.user.api.UserDirectoryService" /> 
+	</bean>
+	<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.espaisPATSincro"
+		class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+		scope="singleton" init-method="init">
+		
+		<property name="beanId">
+			<value>espaisPATSincro</value>
+		</property>
+      
+		<property name="jobName">
+		<value>Tasca de sincronització d'espais PAT amb Course Management</value>
+		</property>
+		
+      	<property name="schedulerManager">
+			<ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+		</property>
+		
+   </bean>
+   
    <bean id="altaAlumnesPAT" class="cat.udl.asic.jobs.altaAlumnesPAT" scope="singleton" init-method="init">
 		
 		<property name="siteService"
