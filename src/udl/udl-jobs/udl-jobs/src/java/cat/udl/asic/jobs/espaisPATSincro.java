@@ -56,13 +56,13 @@ public class espaisPATSincro implements Job {
 	static Logger log = Logger.getLogger(
 			espaisPATSincro.class.getName());
 
-	static String  sqlSelectETCrear = "SELECT CODI_PAT FROM UDL_CM_ESTATS_PAT "
+	static String  sqlSelectPATCrear = "SELECT CODI_PAT FROM UDL_CM_ESTATS_PAT "
 					+ " WHERE ANYACA = ? "
 					+ " AND ESTAT = 0 " ; 
 	
 
 	static String  sqlUpdateEstat = "UPDATE UDL_CM_ESTATS_PAT "
-					+ " SET ESTAT = 1, DATA_CREACIO_ET = ?	"
+					+ " SET ESTAT = 1, DATA_CREACIO_PAT = ?	"
 					+ " WHERE ANYACA = ? "
 					+ " AND CODI_PAT= ? ";
 	
@@ -159,7 +159,7 @@ public class espaisPATSincro implements Job {
         		sakaiConnection.setAutoCommit(false);
         		
         		
-        		sakaiStatement = sakaiConnection.prepareStatement(sqlSelectETCrear);
+        		sakaiStatement = sakaiConnection.prepareStatement(sqlSelectPATCrear);
         		sakaiStatement.setString(1, term);
         		        	        	
         		log.debug("Executem la consulta per recuperar els espais que tenen estat 0");
