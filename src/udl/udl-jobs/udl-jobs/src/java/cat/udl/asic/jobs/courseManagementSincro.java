@@ -65,7 +65,7 @@ public class courseManagementSincro implements Job {
 	
 	static String  sqlSelectGrupsNous = "SELECT CODI_ASS, CODI_GRUP FROM UDL_CM_ESTATS_GRUPS_NOUS "
 			+ " WHERE ANYACA = ? "
-			+ " AND ESTAT = 0 " ; 
+			+ " AND ESTAT = 0 AND CODI_GRUP NOT LIKE 'TIT%'" ; 
 	
 	static String  sqlSelectDoctoratNous = "SELECT CODI_ASS, CODI_GRUP FROM UDL_CM_ESTATS_GRUPS_DOT "
 			+ " WHERE ANYACA = ? "
