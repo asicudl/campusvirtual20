@@ -61,7 +61,7 @@ public class courseManagementSincro implements Job {
 
 	static String  sqlSelectAssCrear = "SELECT CODI_ASS FROM UDL_CM_ESTATS_ASSIGNATURA "
 					+ " WHERE ANYACA = ? "
-					+ " AND ESTAT = 0 " ; 
+					+ " AND ESTAT in (0,5) " ; 
 	
 	static String  sqlSelectGrupsNous = "SELECT CODI_ASS, CODI_GRUP FROM UDL_CM_ESTATS_GRUPS_NOUS "
 			+ " WHERE ANYACA = ? "
@@ -76,6 +76,11 @@ public class courseManagementSincro implements Job {
 					+ " SET ESTAT = 1, DATA_CREACIO_SITE = ?	"
 					+ " WHERE ANYACA = ? "
 					+ " AND CODI_ASS= ? ";
+	
+	static String  sqlUpdateEstat5 = "UPDATE UDL_CM_ESTATS_ASSIGNATURA "
+			+ " SET ESTAT = 5, DATA_CREACIO_SITE = ?	"
+			+ " WHERE ANYACA = ? "
+			+ " AND CODI_ASS= ? ";
 	
 	static String  sqlUpdateEstatGrup = "UPDATE UDL_CM_ESTATS_GRUPS_NOUS "
 			+ " SET ESTAT = 1, DATA_INS_SAKAI = ?	"
@@ -206,91 +211,123 @@ public class courseManagementSincro implements Job {
         		        		        		        
         		while (rst.next()) {
 	    	  			eidCourseOffering = rst.getString("CODI_ASS");
-	    	  			CourseOffering oferta = instanciaCourseManagementService.getCourseOffering(eidCourseOffering);
-	    	  			String idSite = eidCourseOffering+"-"+any_academic;
 	    	  			
-	    	  			String nom_assignatura = oferta.getTitle();
-	    	  			if ( nom_assignatura.length() > iSiteTitleMaxLength ) {
-	    	  				nom_assignatura = nom_assignatura.substring(0, 70); //agafem els primers iSiteTitleMaxLength caràcters,
-	    	  				nom_assignatura = nom_assignatura.concat("...");
-	    				}
-	    	  			
-	    	  			String nomEspai = nom_assignatura + " ("+idSite+")";
-	    	  			// creem l'espai corresponent al course offering recuperat
-	    	  			
-	    	  			String retorn = createSite(idSite,nomEspai, term);	    	  				    	  	
-	    	  			
-	    	  			
-	            		if (retorn.equals("error"))
+	    	  			String getCourseOffering = getCourseOffering(eidCourseOffering);	
+	            		if (getCourseOffering.equals("error"))
 	            		{
-	            			log.info("Error al crear el site "+idSite);
-	            		}
-	            		else{
-	            			log.info("Espai "+idSite+" creat correctament");
-	            			log.debug("Afegim els proveïdors corresponents");
-	            			List<String> llistaProveidors = new Vector<String>();
-	            			Set sections = instanciaCourseManagementService.getSections(eidCourseOffering);
-	        				Iterator iter = sections.iterator();
-	        				while (iter.hasNext()) {
-	        							Section seccio = (Section) iter.next();
-	        							String categoria = seccio.getCategory();
-	        							// a l'espai només afegim els grups de matrícula i de pràctiques matriculables i el grup de professors
-	        							if (categoria.equals("GRUP_MAT") || categoria.equals("GRUP_TA") || categoria.equals("GRUP_PM")) {
-	        								//log.debug("Afegim al site la secció: "+seccio.getEid());
-	        								llistaProveidors.add(seccio.getEid());
-	        							}
-	        							
-	        				}
-	            			String retorn2 = addSiteProviders(idSite,llistaProveidors);
-	            			if (retorn2.equals("error"))
-	                		{
-	                			log.info("Error al crear els  grups de "+idSite);
-	                			log.info("Esborrem el site "+idSite);
-	            				try{	            					
-	            					log.debug("Habilitem el security advisor");
-	            					enableSecurityAdvisor();
-	            					Site site = instanciaSiteService.getSite(idSite);
-	            					instanciaSiteService.removeSite(site);
-	            				} catch (Exception e) {  
-	            					log.error("EXCEPCIO (esborrant Site "+idSite+")");
-	            					log.error(e.getClass().getName() + " :: " + e.getMessage());	            					
-	            				} finally {
-	            				log.debug("Deshabilitem el security advisor");
-	            				disableSecurityAdvisor();
-	            				}
-	                		}
-	            			else if (retorn2.equals("correcte")) {
-	            				log.info("Grups de "+idSite+" afegits correctament");
-	            				//addSiteManager(strSiteId, SITE_CONTACT_NAME, SITE_CONTACT_EMAIL);
-	            				log.debug("Treiem usuari admin del site");
-	            				removeUserFromSite(idSite, "admin");
-	            				log.debug("Actualitzem a estat 1 a la taula de CM");
-	            				
-	            				//Agafem la data actual i la convertim a string	            				
-	            				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-	            				Date data = new Date();
-	            				String dataStr = sdf.format(data);
+	            			log.info("Error al buscar el courseOffering al Course Management"+eidCourseOffering);
 	            			
-	            				try {
-	    	    	  				// update de l'estat a 1	
-	            					PreparedStatement sakaiStatement2 = null;
-	            					sakaiStatement2 = sakaiConnection.prepareStatement(sqlUpdateEstat);        		            					
-	            					sakaiStatement2.setString(1,dataStr);
-	            					sakaiStatement2.setString(2,term);
-	            					sakaiStatement2.setString(3,eidCourseOffering);   
-	            					sakaiStatement2.executeUpdate();    	    	  					            				
-	            						    	    	  				
-	    	    	  				// després de cada actualització fem commit
-	    	    	  				sakaiConnection.commit();	    	    	  			
-	    	    	  	            sakaiStatement2.close();
-	    	    	  	            
-	    	    	  			}catch (SQLException e) {
-	    	    	            	log.error("EXCEPCIO (Update UDL_CM_ESTATS_ASSIGNATURA"+eidCourseOffering+")");
-	    	    	                log.error("SQLException: " +e);
-	    	    	            }	
-	            			}	
-	            		}		
-	    	  	}
+            				//Agafem la data actual i la convertim a string	            				
+            				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            				Date data = new Date();
+            				String dataStr = sdf.format(data);
+
+	            			try {
+    	    	  				// update de l'estat a 5	
+            					PreparedStatement sakaiStatement1 = null;
+            					sakaiStatement1 = sakaiConnection.prepareStatement(sqlUpdateEstat5);        		            					
+            					sakaiStatement1.setString(1,dataStr);
+            					sakaiStatement1.setString(2,term);
+            					sakaiStatement1.setString(3,eidCourseOffering);   
+            					sakaiStatement1.executeUpdate();    	    	  					            				
+            						    	    	  				
+    	    	  				// després de cada actualització fem commit
+    	    	  				sakaiConnection.commit();	    	    	  			
+    	    	  	            sakaiStatement1.close();
+    	    	  	            
+    	    	  			}catch (SQLException e) {
+    	    	            	log.error("EXCEPCIO (Update UDL_CM_ESTATS_ASSIGNATURA"+eidCourseOffering+")");
+    	    	                log.error("SQLException: " +e);
+    	    	            }		            			           		
+	            			
+	            		}
+	            		else {
+		    	  			CourseOffering oferta = instanciaCourseManagementService.getCourseOffering(eidCourseOffering);
+		    	  			String idSite = eidCourseOffering+"-"+any_academic;
+		    	  			
+		    	  			String nom_assignatura = oferta.getTitle();
+		    	  			if ( nom_assignatura.length() > iSiteTitleMaxLength ) {
+		    	  				nom_assignatura = nom_assignatura.substring(0, 70); //agafem els primers iSiteTitleMaxLength caràcters,
+		    	  				nom_assignatura = nom_assignatura.concat("...");
+		    				}
+		    	  			
+		    	  			String nomEspai = nom_assignatura + " ("+idSite+")";
+		    	  			// creem l'espai corresponent al course offering recuperat
+		    	  			
+		    	  			String retorn = createSite(idSite,nomEspai, term);	    	  				    	  	
+		    	  			
+		    	  			
+		            		if (retorn.equals("error"))
+		            		{
+		            			log.info("Error al crear el site "+idSite);
+		            		}
+		            		else{
+		            			log.info("Espai "+idSite+" creat correctament");
+		            			log.debug("Afegim els proveïdors corresponents");
+		            			List<String> llistaProveidors = new Vector<String>();
+		            			Set sections = instanciaCourseManagementService.getSections(eidCourseOffering);
+		        				Iterator iter = sections.iterator();
+		        				while (iter.hasNext()) {
+		        							Section seccio = (Section) iter.next();
+		        							String categoria = seccio.getCategory();
+		        							// a l'espai només afegim els grups de matrícula i de pràctiques matriculables i el grup de professors
+		        							if (categoria.equals("GRUP_MAT") || categoria.equals("GRUP_TA") || categoria.equals("GRUP_PM")) {
+		        								//log.debug("Afegim al site la secció: "+seccio.getEid());
+		        								llistaProveidors.add(seccio.getEid());
+		        							}
+		        							
+		        				}
+		            			String retorn2 = addSiteProviders(idSite,llistaProveidors);
+		            			if (retorn2.equals("error"))
+		                		{
+		                			log.info("Error al crear els  grups de "+idSite);
+		                			log.info("Esborrem el site "+idSite);
+		            				try{	            					
+		            					log.debug("Habilitem el security advisor");
+		            					enableSecurityAdvisor();
+		            					Site site = instanciaSiteService.getSite(idSite);
+		            					instanciaSiteService.removeSite(site);
+		            				} catch (Exception e) {  
+		            					log.error("EXCEPCIO (esborrant Site "+idSite+")");
+		            					log.error(e.getClass().getName() + " :: " + e.getMessage());	            					
+		            				} finally {
+		            				log.debug("Deshabilitem el security advisor");
+		            				disableSecurityAdvisor();
+		            				}
+		                		}
+		            			else if (retorn2.equals("correcte")) {
+		            				log.info("Grups de "+idSite+" afegits correctament");
+		            				//addSiteManager(strSiteId, SITE_CONTACT_NAME, SITE_CONTACT_EMAIL);
+		            				log.debug("Treiem usuari admin del site");
+		            				removeUserFromSite(idSite, "admin");
+		            				log.debug("Actualitzem a estat 1 a la taula de CM");
+		            				
+		            				//Agafem la data actual i la convertim a string	            				
+		            				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		            				Date data = new Date();
+		            				String dataStr = sdf.format(data);
+		            			
+		            				try {
+		    	    	  				// update de l'estat a 1	
+		            					PreparedStatement sakaiStatement2 = null;
+		            					sakaiStatement2 = sakaiConnection.prepareStatement(sqlUpdateEstat);        		            					
+		            					sakaiStatement2.setString(1,dataStr);
+		            					sakaiStatement2.setString(2,term);
+		            					sakaiStatement2.setString(3,eidCourseOffering);   
+		            					sakaiStatement2.executeUpdate();    	    	  					            				
+		            						    	    	  				
+		    	    	  				// després de cada actualització fem commit
+		    	    	  				sakaiConnection.commit();	    	    	  			
+		    	    	  	            sakaiStatement2.close();
+		    	    	  	            
+		    	    	  			}catch (SQLException e) {
+		    	    	            	log.error("EXCEPCIO (Update UDL_CM_ESTATS_ASSIGNATURA"+eidCourseOffering+")");
+		    	    	                log.error("SQLException: " +e);
+		    	    	            }	
+		            			}	
+		            		}		
+		    	  	}
+        		}            			    	  			
         		
         		sakaiStatementGrups = sakaiConnection.prepareStatement(sqlSelectGrupsNous);
         		sakaiStatementGrups.setString(1, term);
@@ -683,6 +720,20 @@ public class courseManagementSincro implements Job {
 		}
 
         return;
-	} 
+	}
+	
+	private String getCourseOffering(String eidCourseOffering) {
+		
+		log.debug("+++ getCourseOffering +++");
+		log.debug("Espai "+eidCourseOffering);
+		try {
+  			CourseOffering oferta = instanciaCourseManagementService.getCourseOffering(eidCourseOffering);
+  			return "correcte";
+		} catch (Exception e) {  
+		log.error("EXCEPCIO (getCourseOffering)");
+		log.error(e.getClass().getName() + " :: " + e.getMessage());
+		return "error";
+		}
+	}
 	
 }
