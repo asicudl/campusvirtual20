@@ -69,5 +69,4 @@
 			</div>
 			
 </f:view>
-
-<script>window.parent.postMessage('hello','http://activacio.udl.cat');</script>
+<script>window.parent.postMessage('hello','https://activacio.udl.cat');</script>

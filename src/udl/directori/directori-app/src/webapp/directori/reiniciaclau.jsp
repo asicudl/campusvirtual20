@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/directori-activa.css" rel="stylesheet" />
 <meta name="viewport" content="width=device-width, minimum-scale=0.9999, user-scalable=yes">
-<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/webjars/jquery/1.12.4/jquery.min.js"></script>
 
 <script>
 	$(document).ready (function (){

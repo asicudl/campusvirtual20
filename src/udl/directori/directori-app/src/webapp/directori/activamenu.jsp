@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="css/directori-activa.css" rel="stylesheet" />
 <meta name="viewport" content="width=device-width, minimum-scale=0.9999, user-scalable=yes">
-<script type="text/javascript" src="/library/js/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/library/webjars/jquery/1.12.4/jquery.min.js"></script>
 
 
 <f:loadBundle basename="es.udl.asic.tool.directori.bundle.Messages" var="msgs"/>
@@ -34,7 +34,7 @@
 		<h1><h:outputText value="#{msgs.activamenutitle}" /></h1>
 		<p><h:outputText value="#{msgs.activamenuinfo}" /></p>
 			<div class="form-group">
-				<a target="_blank" href="http://activacio.udl.cat" class="btn btn-primary sendButton"><h:outputText value="#{msgs.activamenubutton1}"/></a>
+				<a target="_blank" href="https://activacio.udl.cat" class="btn btn-primary sendButton"><h:outputText value="#{msgs.activamenubutton1}"/></a>						
 			</div>
 			<div class="form-group">
 				<a target="_blank" href="https://cv.udl.cat/portal/site/activapaspdi" class="btn btn-primary sendButton"><h:outputText value="#{msgs.activamenubutton2}"/></a>
@@ -50,4 +50,4 @@
 			
 	</div>
 </f:view>
-<script>window.parent.postMessage('hello','https://credencials.udl.cat');</script>
+<script>window.parent.postMessage('hello','https://activacio.udl.cat');</script>
